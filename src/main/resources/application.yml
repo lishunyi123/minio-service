@@ -6,8 +6,6 @@ spring:
 minio:
   # OSS地址
   endpoint: http://192.168.216.128:9000
-  # 默认存储桶
-  bucketName: lishunyi
   # 密钥
-  accessKey: minio
-  secretKey: minio123
+  access-key: minio
+  secret-key: minio123

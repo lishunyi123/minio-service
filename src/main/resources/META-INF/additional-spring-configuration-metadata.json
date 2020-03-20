@@ -1,0 +1,33 @@
+{
+  "groups": [
+    {
+      "name": "minio",
+      "sourceType": "com.lishunyi.minioservice.config.MinioConfiguration",
+      "type": "com.lishunyi.minioservice.config.MinioConfiguration"
+    }
+  ],
+  "properties": [
+    {
+      "name": "minio.endpoint",
+      "type": "java.lang.String",
+      "defaultValue": "127.0.0.1:9000",
+      "description": "OSS地址."
+    },
+    {
+      "name": "minio.bucket-name",
+      "type": "java.lang.String",
+      "defaultValue": "lishunyi",
+      "description": "默认存储桶."
+    },
+    {
+      "name": "minio.access-key",
+      "type": "java.lang.String",
+      "description": "连接密钥."
+    },
+    {
+      "name": "minio.secret-key",
+      "type": "java.lang.String",
+      "description": "密钥."
+    }
+  ]
+}
