@@ -1,26 +1,25 @@
 package com.lishunyi.minioservice.config;
 
+import com.lishunyi.minioservice.props.MinioPorperties;
 import io.minio.MinioClient;
 import io.minio.errors.InvalidEndpointException;
 import io.minio.errors.InvalidPortException;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "minio")
-@Data
+@EnableConfigurationProperties(MinioPorperties.class)
 public class MinioConfiguration {
 
-    private String endpoint;
-
-    private String accessKey;
-
-    private String secretKey;
+    @Autowired
+    private MinioPorperties minioPorperties;
 
     @Bean
-    public MinioClient minioClient() throws InvalidPortException, InvalidEndpointException {
-        return new MinioClient(endpoint, accessKey, secretKey);
+    public OSSClient minioClient() throws InvalidPortException, InvalidEndpointException {
+        return new OSSClient(minioPorperties);
     }
 }

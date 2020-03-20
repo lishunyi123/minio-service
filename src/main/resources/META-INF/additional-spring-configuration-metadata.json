@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "minio",
-      "sourceType": "com.lishunyi.minioservice.config.MinioConfiguration",
-      "type": "com.lishunyi.minioservice.config.MinioConfiguration"
+      "sourceType": "com.lishunyi.minioservice.props.MinioPorperties",
+      "type": "com.lishunyi.minioservice.props.MinioPorperties"
     }
   ],
   "properties": [
