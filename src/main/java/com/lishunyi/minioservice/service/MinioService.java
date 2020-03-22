@@ -13,4 +13,19 @@ public interface MinioService {
      * @return
      */
     String uploadFile(String bucketName, MultipartFile multipartFile, UploadDTO uploadDTO);
+
+    /**
+     * 删除oss文件
+     *
+     * @param bucketName
+     * @param objectName
+     */
+    void deleteFile(String bucketName, String objectName);
+
+    /**
+     * 根据链接删除文件
+     *
+     * @param url
+     */
+    void deleteFile(String url);
 }

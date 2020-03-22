@@ -3,7 +3,6 @@ package com.lishunyi.minioservice.controller;
 import com.lishunyi.minioservice.model.UploadDTO;
 import com.lishunyi.minioservice.service.MinioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,4 +17,13 @@ public class MinioController {
         return minioService.uploadFile(bucketName, multipartFile, uploadDTO);
     }
 
+    @DeleteMapping("delete/{bucket-name}")
+    public void deleteFile(@PathVariable(value = "bucket-name") String bucketName, @RequestParam("url") String url) {
+        minioService.deleteFile(bucketName, url);
+    }
+
+    @DeleteMapping("delete")
+    public void deleteFileByUrl(@RequestParam("url") String url) {
+        minioService.deleteFile(url);
+    }
 }

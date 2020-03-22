@@ -24,6 +24,30 @@ public class MinioServiceImpl implements MinioService {
      */
     @Override
     public String uploadFile(String bucketName, MultipartFile multipartFile, UploadDTO uploadDTO) {
-        return ossClient.putObject(bucketName, multipartFile, uploadDTO);
+        // 存储桶不存在抛出异常
+        ossClient.doesBucketExistError(bucketName);
+        String fileName = ossClient.putObject(bucketName, multipartFile, uploadDTO);
+        return ossClient.getObjectUrl(bucketName, fileName);
+    }
+
+    /**
+     * 删除oss文件
+     *
+     * @param bucketName
+     * @param objectName
+     */
+    @Override
+    public void deleteFile(String bucketName, String objectName) {
+        ossClient.removeObject(bucketName, objectName);
+    }
+
+    /**
+     * 根据链接删除文件
+     *
+     * @param url
+     */
+    @Override
+    public void deleteFile(String url) {
+        ossClient.removeObject(url);
     }
 }
