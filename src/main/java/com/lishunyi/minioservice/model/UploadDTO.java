@@ -2,6 +2,7 @@ package com.lishunyi.minioservice.model;
 
 import com.lishunyi.minioservice.enums.FileTypeEnum;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author LSY
@@ -18,5 +19,10 @@ public class UploadDTO {
     /**
      * 文件类型.
      */
-    private FileTypeEnum fileTypeEnum;
+    private FileTypeEnum fileTypeEnum = FileTypeEnum.DEFAULT;
+
+    /**
+     * 文件流
+     */
+    private MultipartFile multipartFile;
 }

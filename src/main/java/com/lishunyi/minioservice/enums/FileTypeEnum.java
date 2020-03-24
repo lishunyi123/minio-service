@@ -49,6 +49,11 @@ public enum FileTypeEnum {
     JSON("json"),
 
     /**
+     * XML.
+     */
+    XML("xml"),
+
+    /**
      * PDF.
      */
     PDF("pdf"),
@@ -60,4 +65,22 @@ public enum FileTypeEnum {
 
     @Getter
     private String code;
+
+    public static FileTypeEnum valuesOf(String code) {
+        FileTypeEnum fileTypeEnum = resolve(code);
+        if (fileTypeEnum == null) {
+            throw new NullPointerException("没有与 [" + code + "] 匹配的类型");
+        }
+        return fileTypeEnum;
+    }
+
+    public static FileTypeEnum resolve(String code) {
+        FileTypeEnum[] values = values();
+        for (FileTypeEnum value : values) {
+            if (value.getCode().equals(code)) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

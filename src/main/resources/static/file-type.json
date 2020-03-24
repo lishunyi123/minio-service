@@ -1,0 +1,65 @@
+{
+  "image": [
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "ico"
+  ],
+  "audio": [
+    "cda",
+    "wav",
+    "aiff",
+    "mp3",
+    "m4a",
+    "wma",
+    "flac",
+    "aac",
+    "ape"
+  ],
+  "video": [
+    "avi",
+    "mov",
+    "qt",
+    "asf",
+    "rm",
+    "ra",
+    "navi",
+    "mp4"
+  ],
+  "office": [
+    "xls",
+    "xlsx",
+    "doc",
+    "docx",
+    "ppt",
+    "pptx",
+    "mdb"
+  ],
+  "zip": [
+    "zip",
+    "zipx",
+    "rar",
+    "7z",
+    "cab",
+    "pma",
+    "aes",
+    "tar",
+    "gz",
+    "tgz",
+    "bz",
+    "bz2"
+  ],
+  "html": [
+    "html"
+  ],
+  "json": [
+    "json"
+  ],
+  "xml": [
+    "xml"
+  ],
+  "pdf": [
+    "pdf"
+  ]
+}

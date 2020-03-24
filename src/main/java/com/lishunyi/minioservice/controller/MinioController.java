@@ -13,8 +13,8 @@ public class MinioController {
     private MinioService minioService;
 
     @PostMapping("upload/{bucket-name}")
-    public String uploadFile(@PathVariable(value = "bucket-name") String bucketName, @RequestParam("file") MultipartFile multipartFile, UploadDTO uploadDTO) {
-        return minioService.uploadFile(bucketName, multipartFile, uploadDTO);
+    public String uploadFile(@PathVariable(value = "bucket-name") String bucketName, UploadDTO uploadDTO) {
+        return minioService.uploadFile(bucketName, uploadDTO.getMultipartFile(), uploadDTO);
     }
 
     @DeleteMapping("delete/{bucket-name}")
