@@ -9,3 +9,5 @@ minio:
   # 密钥
   access-key: minio
   secret-key: minio123
+server:
+  port: 8081
