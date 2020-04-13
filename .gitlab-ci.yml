@@ -1,0 +1,35 @@
+image: docker:latest
+variables:
+  DOCKER_DRIVER: aliyun
+  DOCKER_HOST: XXX
+  TAG: lishunyi/minio:v0.0.1
+cache:
+  paths:
+    - .m2/repository
+stages:
+  - package
+  - deploy
+# 自定义job
+# 构建jar包，引入maven镜像处理package流程
+maven-package:
+  image: maven:3.5-jdk-8-apline
+  tags:
+    - maven
+  stage: package
+  script:
+    - mvn clean package -Dmaven.test.skip=true
+  artifacts:
+    paths:
+      - target/*.jar
+# 自定义job
+# 构建docker镜像，执行deploy流程
+build-master:
+  tags:
+    - docker
+  stage: deploy
+  script:
+    - docker build -t $TAG .
+    - docker rm -f test || true
+    - docker run -d --name test -p 8081:8081 $TAG
+  only:
+    - master
