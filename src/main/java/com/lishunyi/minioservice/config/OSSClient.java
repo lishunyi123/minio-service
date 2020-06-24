@@ -10,10 +10,14 @@ import com.lishunyi.minioservice.model.UploadDTO;
 import com.lishunyi.minioservice.props.MinioPorperties;
 import io.minio.MinioClient;
 import io.minio.PutObjectOptions;
+import io.minio.Result;
+import io.minio.messages.Bucket;
+import io.minio.messages.Item;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -168,6 +172,45 @@ public class OSSClient {
         }
     }
 
+    /**
+     * 创建指定区域的存储桶
+     *
+     * @param bucketName 桶名称
+     * @param region     区域
+     */
+    public void makeBucket(String bucketName, String region) {
+        try {
+            boolean exists = this.minioClient.bucketExists(bucketName);
+            if (exists) {
+                throw new NullPointerException("存储桶已存在！");
+            }
+            this.minioClient.makeBucket(bucketName, region);
+        } catch (Exception e) {
+            log.error("创建存储桶失败！");
+        }
+    }
+
+    /**
+     * 获取存储桶集合
+     *
+     * @return 存储桶集合
+     */
+    public List<Bucket> listBuckets() {
+        List<Bucket> buckets = null;
+        try {
+            buckets = this.minioClient.listBuckets();
+        } catch (Exception e) {
+        }
+        return buckets;
+    }
+
+    /**
+     * 获取对象的预签名URL，用来上传数据
+     *
+     * @param bucketName
+     * @param objectName
+     * @return
+     */
     public String presignedPutObject(String bucketName, String objectName) {
         String url = null;
         try {

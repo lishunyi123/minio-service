@@ -1,7 +1,10 @@
 package com.lishunyi.minioservice.service;
 
 import com.lishunyi.minioservice.model.UploadDTO;
+import io.minio.messages.Bucket;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface MinioService {
 
@@ -28,4 +31,21 @@ public interface MinioService {
      * @param url
      */
     void deleteFile(String url);
+
+    /**
+     * 创建指定区域的存储桶
+     *
+     * @param bucketName 桶名称
+     * @param region     区域
+     */
+    void createBucket(String bucketName, String region);
+
+    /**
+     * 获取存储桶集合
+     *
+     * @return 存储桶集合
+     */
+    List<String> listBuckets();
+
+    String presignedPutObject(String bucketName, String objectName, String module);
 }
