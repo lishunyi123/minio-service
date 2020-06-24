@@ -1,0 +1,6 @@
+minio:
+  # OSS地址
+  endpoint: http://127.0.0.1:9000
+  # 密钥
+  access-key: minioadmin
+  secret-key: minioadmin

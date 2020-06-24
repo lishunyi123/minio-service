@@ -108,7 +108,10 @@ public class OSSClient {
         String filePath = this.buildFilePath(uploadDTO, multipartFile.getOriginalFilename());
         try {
             InputStream inputStream = multipartFile.getInputStream();
-            minioClient.putObject(bucketName, filePath, inputStream, new PutObjectOptions(inputStream.available(), -1));
+            String contentType = multipartFile.getContentType();
+            PutObjectOptions putObjectOptions = new PutObjectOptions(inputStream.available(), -1);
+            putObjectOptions.setContentType(contentType);
+            minioClient.putObject(bucketName, filePath, inputStream, putObjectOptions);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -163,6 +166,16 @@ public class OSSClient {
         } catch (Exception e) {
             log.error("文件删除失败");
         }
+    }
+
+    public String presignedPutObject(String bucketName, String objectName) {
+        String url = null;
+        try {
+            url = this.minioClient.presignedPutObject(bucketName, objectName);
+        } catch (Exception e) {
+
+        }
+        return url;
     }
 
     /**
