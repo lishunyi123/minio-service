@@ -8,6 +8,7 @@ import cn.hutool.json.JSONUtil;
 import com.lishunyi.minioservice.enums.FileTypeEnum;
 import com.lishunyi.minioservice.model.UploadDTO;
 import com.lishunyi.minioservice.props.MinioPorperties;
+import com.lishunyi.minioservice.utils.OSSUtils;
 import io.minio.MinioClient;
 import io.minio.PutObjectOptions;
 import io.minio.Result;
@@ -81,23 +82,6 @@ public class OSSClient {
         if (!exists) {
             throw new NullPointerException("存储桶不存在");
         }
-    }
-
-    public FileTypeEnum getFileType(String fileSuffix) {
-        // 如果文件后缀为空返回默认文件
-        if (StringUtils.isEmpty(fileSuffix)) {
-            return FileTypeEnum.DEFAULT;
-        }
-        FileReader fileReader = new FileReader("static/file-type.json");
-        String readString = fileReader.readString();
-        Map<String, Object> map = JSONUtil.parseObj(readString);
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            List list = (List) entry.getValue();
-            if (list.contains(fileSuffix)) {
-                return FileTypeEnum.valuesOf(entry.getKey());
-            }
-        }
-        return FileTypeEnum.DEFAULT;
     }
 
     /**
@@ -214,7 +198,7 @@ public class OSSClient {
     public String presignedPutObject(String bucketName, String objectName) {
         String url = null;
         try {
-            url = this.minioClient.presignedPutObject(bucketName, objectName);
+            url = this.minioClient.presignedPutObject(bucketName, objectName, 60 * 60 * 5);
         } catch (Exception e) {
 
         }
@@ -259,16 +243,16 @@ public class OSSClient {
              * 先根据文件二进制类型获取
              * 为空就截取后缀名
              */
-            fileSuffix = this.getType(uploadDTO.getMultipartFile());
+            fileSuffix = OSSUtils.getType(uploadDTO.getMultipartFile());
         } catch (Exception e) {
             log.error("");
         }
         // 去后缀文件名
-        String name = this.getFileName(originFileName);
+        String name = OSSUtils.getFileName(originFileName);
         // 获得新文件名
-        String fileName = this.timeFileName(name);
+        String fileName = OSSUtils.timeFileName(name);
         // 获取路径类型
-        FileTypeEnum fileTypeEnum = this.getFileType(fileSuffix);
+        FileTypeEnum fileTypeEnum = OSSUtils.getFileType(fileSuffix);
         // 如果文件没有后缀则不添加
         if (StringUtils.isEmpty(fileSuffix)) {
             return uploadDTO.getModule() + "/" + fileTypeEnum.getCode() + "/" + fileName;
@@ -276,117 +260,4 @@ public class OSSClient {
         return uploadDTO.getModule() + "/" + fileTypeEnum.getCode() + "/" + fileName + "." + fileSuffix;
     }
 
-    /**
-     * uuid构造文件名称
-     *
-     * @param originFileName
-     * @return
-     */
-    private String uuidFileName(String originFileName) {
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        if (originFileName.length() > 30) {
-            return uuid;
-        }
-        return originFileName + "_" + uuid;
-    }
-
-    /**
-     * 时间戳构造文件名
-     *
-     * @param originFileName
-     * @return
-     */
-    private String timeFileName(String originFileName) {
-        // 毫秒级时间戳
-        String str = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        if (originFileName.length() > 30) {
-            return str;
-        }
-        return originFileName + "_" + str;
-    }
-
-    /**
-     * 获取文件名后缀
-     * 不带.
-     *
-     * @param originFileName
-     * @return
-     */
-    private String getFileSuffix(String originFileName) {
-        if (originFileName.contains(".")) {
-            return originFileName.substring(originFileName.lastIndexOf('.') + 1).toLowerCase();
-        }
-        return null;
-    }
-
-    /**
-     * 获取文件类型
-     *
-     * @param inputStream
-     * @return
-     */
-    private String getFileType(InputStream inputStream) {
-        return FileTypeUtil.getType(inputStream);
-    }
-
-    /**
-     * 获取类型
-     * 仿照hutool里面的`FileTypeUtil.getType`
-     *
-     * @param multipartFile
-     * @return
-     * @throws IORuntimeException
-     * @throws IOException
-     */
-    public String getType(MultipartFile multipartFile) throws IORuntimeException, IOException {
-        String typeName;
-        FileInputStream in = null;
-        try {
-            in = (FileInputStream) multipartFile.getInputStream();
-            typeName = FileTypeUtil.getType(in);
-        } finally {
-            IoUtil.close(in);
-        }
-
-        if (null == typeName) {
-            // 未成功识别类型，扩展名辅助识别
-            typeName = this.getFileSuffix(multipartFile.getOriginalFilename());
-        } else if ("xls".equals(typeName)) {
-            // xls、doc、msi的头一样，使用扩展名辅助判断
-            final String extName = this.getFileSuffix(multipartFile.getOriginalFilename());
-            if ("doc".equalsIgnoreCase(extName)) {
-                typeName = "doc";
-            } else if ("msi".equalsIgnoreCase(extName)) {
-                typeName = "msi";
-            }
-        } else if ("zip".equals(typeName)) {
-            // zip可能为docx、xlsx、pptx、jar、war等格式，扩展名辅助判断
-            final String extName = this.getFileSuffix(multipartFile.getOriginalFilename());
-            if ("docx".equalsIgnoreCase(extName)) {
-                typeName = "docx";
-            } else if ("xlsx".equalsIgnoreCase(extName)) {
-                typeName = "xlsx";
-            } else if ("pptx".equalsIgnoreCase(extName)) {
-                typeName = "pptx";
-            } else if ("jar".equalsIgnoreCase(extName)) {
-                typeName = "jar";
-            } else if ("war".equalsIgnoreCase(extName)) {
-                typeName = "war";
-            }
-        }
-        return typeName;
-    }
-
-    /**
-     * 获取去除后缀的文件名
-     *
-     * @param originFileName
-     * @return
-     */
-    private String getFileName(String originFileName) {
-        if (!originFileName.contains(".")) {
-            return originFileName;
-        }
-        return originFileName.substring(0, originFileName.lastIndexOf('.'));
-    }
 }

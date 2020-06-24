@@ -20,13 +20,12 @@ public class MinioController {
 
     public static void main(String[] args) {
         try {
-            File file = new File("C:\\Users\\LSY\\Pictures\\StockSnap_0YOGPRIUIZ.jpg");
-            URL url = new URL("http://127.0.0.1:9000/test/user/image/StockSnap_0YOGPRIUIZ.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20200624%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200624T122555Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=6b50efe54899755166458cc4412494d59cc04a75477373511d3b9f5acdcd81a7");
+            File file = new File("C:\\Users\\LSY\\Desktop\\abcd.txt");
+            URL url = new URL("http://127.0.0.1:9000/test/user/default/abc_1593004538917.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20200624%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200624T131538Z&X-Amz-Expires=18000&X-Amz-SignedHeaders=host&X-Amz-Signature=ce8cae0c0e6b265ec51fabd0aad76d7f389e61a1dfc284f8f716135e8f17b48f");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setRequestMethod("PUT");
-            connection.setRequestProperty("Content-Type", "image/jpg");
-            System.out.println(connection.getContentType() + "---");
+            connection.setRequestProperty("Content-Type", "text/plain");
             OutputStream out = new DataOutputStream(connection.getOutputStream());
             DataInputStream in = new DataInputStream(new FileInputStream(file));
             int bytes = 0;
@@ -98,7 +97,8 @@ public class MinioController {
 
     @GetMapping("pre-signed-putObject")
     public String presignedPutObject(@RequestParam(value = "bucketName") String bucketName,
-                                     @RequestParam(value = "objectName") String objectName) {
-        return minioService.presignedPutObject(bucketName, objectName);
+                                     @RequestParam(value = "objectName") String objectName,
+                                     @RequestParam(value = "module") String module) {
+        return minioService.presignedPutObject(bucketName, objectName, module);
     }
 }

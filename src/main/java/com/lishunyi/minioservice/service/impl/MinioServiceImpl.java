@@ -1,12 +1,15 @@
 package com.lishunyi.minioservice.service.impl;
 
 import com.lishunyi.minioservice.config.OSSClient;
+import com.lishunyi.minioservice.enums.FileTypeEnum;
 import com.lishunyi.minioservice.model.UploadDTO;
 import com.lishunyi.minioservice.service.MinioService;
+import com.lishunyi.minioservice.utils.OSSUtils;
 import io.minio.messages.Bucket;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -78,7 +81,21 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public String presignedPutObject(String bucketName, String objectName, String module) {
+        String fileSuffix = OSSUtils.getFileSuffix(objectName);
+        // 去后缀文件名
+        String name = OSSUtils.getFileName(objectName);
+        // 获得新文件名
+        String fileName = OSSUtils.timeFileName(name);
+        // 获取路径类型
+        FileTypeEnum fileTypeEnum = OSSUtils.getFileType(fileSuffix);
+        // 如果文件没有后缀则不添加
+        String pathFileName = "";
+        if (StringUtils.isEmpty(fileSuffix)) {
+            pathFileName = module + "/" + fileTypeEnum.getCode() + "/" + fileName;
+        } else {
+            pathFileName = module + "/" + fileTypeEnum.getCode() + "/" + fileName + "." + fileSuffix;
+        }
 
-        return ossClient.presignedPutObject(bucketName, objectName);
+        return ossClient.presignedPutObject(bucketName, pathFileName);
     }
 }
