@@ -1,31 +1,22 @@
 package com.lishunyi.minioservice.config;
 
 import cn.hutool.core.io.FileTypeUtil;
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.io.file.FileReader;
-import cn.hutool.core.io.resource.ClassPathResource;
-import cn.hutool.core.io.resource.ResourceUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.google.api.client.util.Lists;
 import com.lishunyi.minioservice.enums.FileTypeEnum;
 import com.lishunyi.minioservice.model.UploadDTO;
 import com.lishunyi.minioservice.props.MinioPorperties;
 import io.minio.MinioClient;
+import io.minio.PutObjectOptions;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -117,9 +108,7 @@ public class OSSClient {
         String filePath = this.buildFilePath(uploadDTO, multipartFile.getOriginalFilename());
         try {
             InputStream inputStream = multipartFile.getInputStream();
-            Map<String, String> headerMap = new HashMap<>();
-            headerMap.put("Content-Type", "application/octet-stream");
-            minioClient.putObject(bucketName, filePath, inputStream, inputStream.available(), headerMap);
+            minioClient.putObject(bucketName, filePath, inputStream, new PutObjectOptions(inputStream.available(), -1));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
