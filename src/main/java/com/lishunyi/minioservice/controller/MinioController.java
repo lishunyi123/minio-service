@@ -101,4 +101,9 @@ public class MinioController {
                                      @RequestParam(value = "module") String module) {
         return minioService.presignedPutObject(bucketName, objectName, module);
     }
+
+    @GetMapping("bucket-policy")
+    public String getBucketPolicy(@RequestParam(value = "bucketName") String bucketName) {
+        return minioService.getBucketPolicy(bucketName);
+    }
 }

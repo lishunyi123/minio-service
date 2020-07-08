@@ -30,6 +30,12 @@ import java.util.*;
 public class OSSClient {
 
     /**
+     * 临时上传URL过期时间
+     * 5分钟
+     */
+    private static final int EXPIRY_TIME = 5 * 60;
+
+    /**
      * minio客户端.
      */
     private MinioClient minioClient;
@@ -191,18 +197,34 @@ public class OSSClient {
     /**
      * 获取对象的预签名URL，用来上传数据
      *
-     * @param bucketName
-     * @param objectName
-     * @return
+     * @param bucketName 存储桶名称
+     * @param objectName 对象名称
+     * @return 临时上传URL
      */
     public String presignedPutObject(String bucketName, String objectName) {
         String url = null;
         try {
-            url = this.minioClient.presignedPutObject(bucketName, objectName, 60 * 60 * 5);
+            url = this.minioClient.presignedPutObject(bucketName, objectName, EXPIRY_TIME);
         } catch (Exception e) {
 
         }
         return url;
+    }
+
+    /**
+     * 获取指定存储桶的策略
+     *
+     * @param bucketName 存储桶名称
+     * @return 策略
+     */
+    public String getBucketPolicy(String bucketName) {
+        String config = null;
+        try {
+            config = minioClient.getBucketPolicy(bucketName);
+        } catch (Exception e) {
+
+        }
+        return config;
     }
 
     /**

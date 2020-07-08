@@ -79,6 +79,14 @@ public class MinioServiceImpl implements MinioService {
         return ossClient.listBuckets().stream().map(Bucket::name).collect(Collectors.toList());
     }
 
+    /**
+     * 获取对象的预签名URL，用来上传数据
+     *
+     * @param bucketName 存储桶名称
+     * @param objectName 对象名称
+     * @param module     模块名称
+     * @return 临时上传URL
+     */
     @Override
     public String presignedPutObject(String bucketName, String objectName, String module) {
         String fileSuffix = OSSUtils.getFileSuffix(objectName);
@@ -97,5 +105,16 @@ public class MinioServiceImpl implements MinioService {
         }
 
         return ossClient.presignedPutObject(bucketName, pathFileName);
+    }
+
+    /**
+     * 获取指定存储桶的策略
+     *
+     * @param bucketName 存储桶名称
+     * @return 策略
+     */
+    @Override
+    public String getBucketPolicy(String bucketName) {
+        return ossClient.getBucketPolicy(bucketName);
     }
 }
