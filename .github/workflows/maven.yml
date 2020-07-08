@@ -22,3 +22,7 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      env:
+        ID: rdc-snapshots
+        MAVEN_USERNAME: 0JCvle
+        MAVEN_PASSWORD: kM1xaxwMU6
