@@ -66,6 +66,17 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://packages.aliyun.com/maven/repository/2011143-release-TGxyRT/</url>
+        </repository>
+        <repository>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/102671-snapshot-hm5RmW/</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
