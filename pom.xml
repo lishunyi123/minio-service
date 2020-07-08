@@ -73,7 +73,7 @@
         </repository>
         <repository>
             <id>rdc-snapshots</id>
-            <url>https://repo.rdc.aliyun.com/repository/102671-snapshot-hm5RmW/</url>
+            <url>https://packages.aliyun.com/maven/repository/2011143-snapshot-0Ydb5d/</url>
         </repository>
     </repositories>
 
