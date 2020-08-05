@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * @author LSY
  * 文件类型枚举
@@ -66,21 +69,9 @@ public enum FileTypeEnum {
     @Getter
     private String code;
 
-    public static FileTypeEnum valuesOf(String code) {
-        FileTypeEnum fileTypeEnum = resolve(code);
-        if (fileTypeEnum == null) {
-            throw new NullPointerException("没有与 [" + code + "] 匹配的类型");
-        }
-        return fileTypeEnum;
-    }
-
-    public static FileTypeEnum resolve(String code) {
-        FileTypeEnum[] values = values();
-        for (FileTypeEnum value : values) {
-            if (value.getCode().equals(code)) {
-                return value;
-            }
-        }
-        return null;
+    public static FileTypeEnum valuesOf(final String code) {
+        return Arrays.stream(FileTypeEnum.values())
+                .filter(e -> Objects.equals(e.getCode(), code))
+                .findFirst().orElseThrow(() -> new NullPointerException("没有与 [" + code + "] 匹配的类型"));
     }
 }
