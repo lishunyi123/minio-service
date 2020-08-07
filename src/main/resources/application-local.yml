@@ -1,6 +1,13 @@
 minio:
+  enable: false
   # OSS地址
   endpoint: http://127.0.0.1:9000
   # 密钥
   access-key: minioadmin
   secret-key: minioadmin
+
+qiniu:
+  enable: true
+  endpoint: s3-cn-south-1.qiniucs.com
+  access-key: QB-l0v3ZIR3v-lzrDPAU_DgMIS3HHGZGmGzashFz
+  secret-key: yfIbgxQtjUZg7SQn2-0Kd1II2BQOu73Aq8_R_CUP

@@ -4,6 +4,11 @@
       "name": "minio",
       "sourceType": "com.lishunyi.minioservice.props.MinioPorperties",
       "type": "com.lishunyi.minioservice.props.MinioPorperties"
+    },
+    {
+      "name": "qiniu",
+      "sourceType": "com.lishunyi.minioservice.props.QiniuPorperties",
+      "type": "com.lishunyi.minioservice.props.QiniuPorperties"
     }
   ],
   "properties": [
@@ -28,6 +33,33 @@
       "name": "minio.secret-key",
       "type": "java.lang.String",
       "description": "密钥."
+    },
+    {
+      "name": "minio.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "是否开启minio."
+    },
+    {
+      "name": "qiniu.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "是否开启七牛云."
+    },
+    {
+      "name": "qiniu.endpoint",
+      "type": "java.lang.String",
+      "description": "Description for qiniu.endpoint."
+    },
+    {
+      "name": "qiniu.access-key",
+      "type": "java.lang.String",
+      "description": "Description for qiniu.access-key."
+    },
+    {
+      "name": "qiniu.secret-key",
+      "type": "java.lang.String",
+      "description": "Description for qiniu.secret-key."
     }
   ]
 }

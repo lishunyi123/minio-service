@@ -1,6 +1,6 @@
 package com.lishunyi.minioservice.service.impl;
 
-import com.lishunyi.minioservice.config.OSSClient;
+import com.lishunyi.minioservice.config.MinioUtil;
 import com.lishunyi.minioservice.enums.FileTypeEnum;
 import com.lishunyi.minioservice.model.UploadDTO;
 import com.lishunyi.minioservice.service.MinioService;
@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MinioServiceImpl implements MinioService {
 
-    @Autowired
-    private OSSClient ossClient;
+    @Autowired(required = false)
+    private MinioUtil ossClient;
 
     /**
      * 文件上传

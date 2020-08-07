@@ -3,6 +3,7 @@ package com.lishunyi.minioservice.controller;
 import com.lishunyi.minioservice.model.BucketDTO;
 import com.lishunyi.minioservice.model.UploadDTO;
 import com.lishunyi.minioservice.service.MinioService;
+import com.qiniu.util.Auth;
 import io.minio.messages.Bucket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -105,5 +106,13 @@ public class MinioController {
     @GetMapping("bucket-policy")
     public String getBucketPolicy(@RequestParam(value = "bucketName") String bucketName) {
         return minioService.getBucketPolicy(bucketName);
+    }
+
+    @GetMapping("getUpToken")
+    public String getUpToken() {
+        Auth auth = Auth.create("QB-l0v3ZIR3v-lzrDPAU_DgMIS3HHGZGmGzashFz", "yfIbgxQtjUZg7SQn2-0Kd1II2BQOu73Aq8_R_CUP");
+        String token = auth.uploadToken("pub-lishunyi");
+        System.out.println(token);
+        return token;
     }
 }

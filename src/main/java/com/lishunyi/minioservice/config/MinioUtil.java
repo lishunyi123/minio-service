@@ -27,7 +27,7 @@ import java.time.ZoneOffset;
 import java.util.*;
 
 @Slf4j
-public class OSSClient {
+public class MinioUtil {
 
     /**
      * 临时上传URL过期时间
@@ -45,7 +45,7 @@ public class OSSClient {
      */
     private MinioPorperties minioPorperties;
 
-    public OSSClient(MinioPorperties minioPorperties) {
+    public MinioUtil(MinioPorperties minioPorperties) {
         this.minioPorperties = minioPorperties;
         this.init();
     }
